@@ -111,10 +111,12 @@ export async function WorkshopLanding() {
             Different commitment levels. Nobody has to self-identify as &quot;not ready.&quot;
           </p>
         </div>
-        <div className="grid gap-4 sm:grid-cols-3">
-          <Card className="flex h-full flex-col">
-            <CardHeader>
-              <Badge className="self-start">Most people start here</Badge>
+        <div className="grid justify-center gap-4 sm:grid-cols-3">
+          <Card className="relative flex h-full flex-col rounded-2xl border-2 border-primary">
+            <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1">
+              Most people start here
+            </Badge>
+            <CardHeader className="pt-8">
               <CardTitle>Free growth teardown</CardTitle>
               <CardDescription>30 minutes. We find the leak. No card, no obligation.</CardDescription>
             </CardHeader>
@@ -125,8 +127,8 @@ export async function WorkshopLanding() {
             </CardContent>
           </Card>
 
-          <Card className="flex h-full flex-col">
-            <CardHeader>
+          <Card className="flex h-full flex-col rounded-2xl">
+            <CardHeader className="pt-8">
               <CardTitle>Toggle Bespoke weekend</CardTitle>
               <CardDescription>
                 Build the system in-house. One weekend. No retainer. For founders and teams who
@@ -140,8 +142,8 @@ export async function WorkshopLanding() {
             </CardContent>
           </Card>
 
-          <Card className="flex h-full flex-col">
-            <CardHeader>
+          <Card className="flex h-full flex-col rounded-2xl">
+            <CardHeader className="pt-8">
               <CardTitle>Just talk to us</CardTitle>
               <CardDescription>Have a specific question? Message us directly.</CardDescription>
             </CardHeader>
