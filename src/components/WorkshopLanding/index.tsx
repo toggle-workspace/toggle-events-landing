@@ -29,7 +29,7 @@ export async function WorkshopLanding() {
         />
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -left-[95px] -top-[110px] h-[735px] w-[645px] -scale-x-100 rotate-[24deg] bg-[url('/brand/tiktok-note.svg')] bg-contain bg-no-repeat md:hidden"
+          className="pointer-events-none absolute inset-0 bg-[url('/brand/tiktok-note-mobile.svg')] bg-cover bg-top bg-no-repeat md:hidden"
         />
 
         <div className="container relative flex flex-col items-start gap-6 pb-32 pt-28 font-jakarta">
