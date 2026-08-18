@@ -7,8 +7,8 @@ import { fileURLToPath } from 'url'
 import { CaseStudies } from './collections/CaseStudies'
 import { FAQ } from './collections/FAQ'
 import { Media } from './collections/Media'
-import { Team } from './collections/Team'
-import { Topics } from './collections/Topics'
+import { Modules } from './collections/Modules'
+import { Organizations } from './collections/Organizations'
 import { Users } from './collections/Users'
 import { Home } from './Home/config'
 import { plugins } from './plugins'
@@ -63,7 +63,7 @@ export default buildConfig({
     },
     push: process.env.NODE_ENV !== 'production',
   }),
-  collections: [CaseStudies, FAQ, Media, Team, Topics, Users],
+  collections: [CaseStudies, FAQ, Media, Modules, Organizations, Users],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Home],
   plugins,

@@ -41,7 +41,7 @@ export const WorkshopForm: React.FC = () => {
   }
 
   return (
-    <Card id="form" className="w-full lg:w-[420px] lg:shrink-0">
+    <Card id="form" className="w-full max-w-lg">
       {step === 'step1' && (
         <form onSubmit={handleStep1}>
           <CardHeader>

@@ -70,8 +70,8 @@ export interface Config {
     'case-studies': CaseStudy;
     faq: Faq;
     media: Media;
-    team: Team;
-    topics: Topic;
+    modules: Module;
+    organizations: Organization;
     users: User;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
@@ -83,8 +83,8 @@ export interface Config {
     'case-studies': CaseStudiesSelect<false> | CaseStudiesSelect<true>;
     faq: FaqSelect<false> | FaqSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    team: TeamSelect<false> | TeamSelect<true>;
-    topics: TopicsSelect<false> | TopicsSelect<true>;
+    modules: ModulesSelect<false> | ModulesSelect<true>;
+    organizations: OrganizationsSelect<false> | OrganizationsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -269,42 +269,68 @@ export interface Faq {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "team".
+ * via the `definition` "modules".
  */
-export interface Team {
+export interface Module {
   id: number;
-  name: string;
+  title: string;
+  description: string;
   /**
-   * e.g. "Head of Growth · 8 yrs"
+   * Lucide icon name shown with this module
    */
-  role: string;
-  description?: string | null;
-  image?: (number | null) | Media;
-  /**
-   * Full LinkedIn profile URL
-   */
-  linkedin?: string | null;
-  /**
-   * Any other social link (e.g. TikTok, X, Instagram)
-   */
-  social?: string | null;
-  /**
-   * Lower numbers show first
-   */
-  order?: number | null;
+  icon:
+    | 'Rocket'
+    | 'Target'
+    | 'Zap'
+    | 'Users'
+    | 'BarChart'
+    | 'Brain'
+    | 'Code'
+    | 'Megaphone'
+    | 'TrendingUp'
+    | 'ShoppingCart'
+    | 'Layers'
+    | 'Compass'
+    | 'Lightbulb'
+    | 'Puzzle'
+    | 'ShieldCheck'
+    | 'Workflow';
   updatedAt: string;
   createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "topics".
+ * via the `definition` "organizations".
  */
-export interface Topic {
+export interface Organization {
   id: number;
-  title: string;
-  description: string;
   /**
-   * Lower numbers show first
+   * Used as the dropdown value and ?org= query param
+   */
+  slug: string;
+  name: string;
+  sector: string;
+  headline: string;
+  situation: string;
+  pathway: {
+    code: string;
+    name: string;
+    shape: string;
+    why: string;
+  };
+  pillars: {
+    title: string;
+    body: string;
+    id?: string | null;
+  }[];
+  modules: (number | Module)[];
+  outcomes: {
+    outcome: string;
+    id?: string | null;
+  }[];
+  proof: number | CaseStudy;
+  /**
+   * Order in the dropdown
    */
   order?: number | null;
   updatedAt: string;
@@ -373,12 +399,12 @@ export interface PayloadLockedDocument {
         value: number | Media;
       } | null)
     | ({
-        relationTo: 'team';
-        value: number | Team;
+        relationTo: 'modules';
+        value: number | Module;
       } | null)
     | ({
-        relationTo: 'topics';
-        value: number | Topic;
+        relationTo: 'organizations';
+        value: number | Organization;
       } | null)
     | ({
         relationTo: 'users';
@@ -552,26 +578,48 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "team_select".
+ * via the `definition` "modules_select".
  */
-export interface TeamSelect<T extends boolean = true> {
-  name?: T;
-  role?: T;
+export interface ModulesSelect<T extends boolean = true> {
+  title?: T;
   description?: T;
-  image?: T;
-  linkedin?: T;
-  social?: T;
-  order?: T;
+  icon?: T;
   updatedAt?: T;
   createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "topics_select".
+ * via the `definition` "organizations_select".
  */
-export interface TopicsSelect<T extends boolean = true> {
-  title?: T;
-  description?: T;
+export interface OrganizationsSelect<T extends boolean = true> {
+  slug?: T;
+  name?: T;
+  sector?: T;
+  headline?: T;
+  situation?: T;
+  pathway?:
+    | T
+    | {
+        code?: T;
+        name?: T;
+        shape?: T;
+        why?: T;
+      };
+  pillars?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  modules?: T;
+  outcomes?:
+    | T
+    | {
+        outcome?: T;
+        id?: T;
+      };
+  proof?: T;
   order?: T;
   updatedAt?: T;
   createdAt?: T;
