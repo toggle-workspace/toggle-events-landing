@@ -1,0 +1,25 @@
+name: Require migration for schema changes
+
+on:
+  pull_request:
+
+jobs:
+  check-migration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Fail if payload.config.ts changed without a migration
+        run: |
+          CHANGED=$(git diff --name-only "${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }}")
+
+          if echo "$CHANGED" | grep -qx 'src/payload.config.ts'; then
+            MIGRATION_FILES=$(echo "$CHANGED" | grep -E '^src/migrations/.+\.ts$' | grep -vx 'src/migrations/index.ts' || true)
+            if [ -z "$MIGRATION_FILES" ]; then
+              echo "src/payload.config.ts changed but no migration file was added under src/migrations/."
+              echo "Run 'npx payload migrate:create <name>' against the dev branch and commit the result."
+              exit 1
+            fi
+          fi
