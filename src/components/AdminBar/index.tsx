@@ -6,7 +6,6 @@ import { cn } from '@/utilities/ui'
 import { useSelectedLayoutSegments } from 'next/navigation'
 import { PayloadAdminBar } from '@payloadcms/admin-bar'
 import React, { useState } from 'react'
-import { useRouter } from 'next/navigation'
 
 import './index.css'
 
@@ -36,7 +35,6 @@ export const AdminBar: React.FC<{
   const collection = (
     collectionLabels[segments?.[1] as keyof typeof collectionLabels] ? segments[1] : 'pages'
   ) as keyof typeof collectionLabels
-  const router = useRouter()
 
   const onAuthChange = React.useCallback((user: PayloadMeUser) => {
     setShow(Boolean(user?.id))
@@ -66,12 +64,6 @@ export const AdminBar: React.FC<{
           }}
           logo={<Title />}
           onAuthChange={onAuthChange}
-          onPreviewExit={() => {
-            fetch('/next/exit-preview').then(() => {
-              router.push('/')
-              router.refresh()
-            })
-          }}
           style={{
             backgroundColor: 'transparent',
             padding: 0,
