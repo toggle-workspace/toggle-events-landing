@@ -36,7 +36,7 @@ export async function WorkshopLanding() {
   return (
     <>
       {/* Hero */}
-      <section className="container flex min-h-[calc(100vh-65px)] flex-col justify-center gap-10 pt-16 pb-16 lg:flex-row lg:items-center lg:justify-between">
+      <section className="container flex min-h-screen flex-col justify-center gap-10 pt-16 pb-16 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex flex-col items-start gap-4 lg:max-w-xl lg:flex-1">
           <Badge variant="outline">TikTok Partnership Workshop · [[CITY]] · [[DATE]]</Badge>
           <h1 className="font-display text-5xl uppercase tracking-tight sm:text-7xl">
@@ -81,7 +81,7 @@ export async function WorkshopLanding() {
             Give the real insight here — not a teaser. They just sat through the talk.
           </p>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4">
           {topics.docs.map((item, i) => (
             <Card key={item.id}>
               <CardHeader>
@@ -112,20 +112,20 @@ export async function WorkshopLanding() {
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-3">
-          <Card>
+          <Card className="flex h-full flex-col">
             <CardHeader>
               <Badge className="self-start">Most people start here</Badge>
               <CardTitle>Free growth teardown</CardTitle>
               <CardDescription>30 minutes. We find the leak. No card, no obligation.</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="mt-auto">
               <Button asChild className="w-full">
                 <a href="#form">Book my teardown</a>
               </Button>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="flex h-full flex-col">
             <CardHeader>
               <CardTitle>Toggle Bespoke weekend</CardTitle>
               <CardDescription>
@@ -133,19 +133,19 @@ export async function WorkshopLanding() {
                 want capability, not dependency.
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="mt-auto">
               <Button asChild variant="outline" className="w-full">
                 <a href="#form">See how Bespoke works</a>
               </Button>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="flex h-full flex-col">
             <CardHeader>
               <CardTitle>Just talk to us</CardTitle>
               <CardDescription>Have a specific question? Message us directly.</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="mt-auto">
               <Button asChild variant="outline" className="w-full">
                 <a href="#">💬 WhatsApp [[Viknesh]]</a>
               </Button>
@@ -228,23 +228,26 @@ export async function WorkshopLanding() {
           <h2 className="font-display text-4xl uppercase tracking-tight">Senior operators, not account managers</h2>
           <p className="text-muted-foreground">The people who&apos;d actually run your teardown.</p>
         </div>
-        <div className="grid gap-6 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
           {team.docs.map((person) => {
             const image = person.image && typeof person.image === 'object' ? person.image : null
             return (
-              <div key={person.id} className="flex flex-col items-center gap-2 text-center">
-                {image ? (
-                  <Media
-                    resource={image}
-                    imgClassName="size-24 rounded-full object-cover"
-                  />
-                ) : (
-                  <div className="flex size-24 items-center justify-center rounded-full bg-muted text-xl font-medium">
-                    {teamInitials(person.name)}
-                  </div>
-                )}
-                <p className="font-medium">{person.name}</p>
-                <p className="text-sm text-muted-foreground">{person.role}</p>
+              <div key={person.id} className="flex flex-col gap-4">
+                <div className="relative aspect-3/4 bg-muted">
+                  {image ? (
+                    <Media resource={image} fill imgClassName="object-cover" />
+                  ) : (
+                    <div className="flex h-full items-center justify-center text-2xl font-medium">
+                      {teamInitials(person.name)}
+                    </div>
+                  )}
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-mono text-[13px] leading-4 uppercase">{person.name}</span>
+                  <span className="font-mono text-[13px] leading-4 text-muted-foreground uppercase">
+                    {person.role}
+                  </span>
+                </div>
                 {person.description && (
                   <p className="text-sm text-muted-foreground">{person.description}</p>
                 )}
