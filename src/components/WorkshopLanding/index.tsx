@@ -21,17 +21,41 @@ export async function WorkshopLanding() {
   return (
     <>
       {/* Hero */}
-      <section className="container flex flex-col items-start gap-4 py-16">
-        <h1 className="font-display text-5xl uppercase tracking-tight sm:text-8xl">
-          Now let&apos;s hear from you.
-        </h1>
-        <div className="flex flex-wrap gap-3">
-          <Button asChild size="lg">
-            <a href="#form">Book a call</a>
-          </Button>
-          <Button asChild size="lg" variant="ghost">
-            <a href="#form">Audit my brand</a>
-          </Button>
+      <section className="relative isolate overflow-hidden bg-black">
+        {/* Decorative TikTok note watermark — positioned per breakpoint, matches Figma */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-[90px] -top-[70px] hidden h-[660px] w-[580px] rotate-[-15deg] bg-[url('/brand/tiktok-note.svg')] bg-contain bg-no-repeat md:block"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -left-[60px] -top-[20px] h-[540px] w-[474px] rotate-[24deg] bg-[url('/brand/tiktok-note.svg')] bg-contain bg-no-repeat md:hidden"
+        />
+
+        <div className="container relative flex flex-col items-start gap-6 pb-32 pt-28 font-jakarta">
+          <h1 className="max-w-[800px] text-[48px] font-semibold leading-[61px] tracking-tight text-white md:text-[60px] md:leading-[72px]">
+            Now let&apos;s hear from you.
+          </h1>
+          <p className="max-w-[800px] text-[19px] leading-[32.3px] text-[#94a3b8] md:text-[20px]">
+            Explore our values, philosophy, and approach that guide every project and help our
+            clients build stronger, lasting brands.
+          </p>
+          <div className="flex w-full flex-col gap-4 pt-2 sm:w-auto sm:flex-row sm:items-center">
+            <Button
+              asChild
+              size="clear"
+              className="w-full rounded-2xl bg-white px-[31px] py-[18px] text-[17px] font-semibold text-black hover:bg-white/90 sm:w-auto"
+            >
+              <a href="#form">Book a Call</a>
+            </Button>
+            <Button
+              asChild
+              size="clear"
+              className="w-full rounded-2xl bg-[#387aff] px-8 py-[19px] text-[17px] font-semibold text-white hover:bg-[#387aff]/90 sm:w-auto"
+            >
+              <a href="#form">Audit My Brand</a>
+            </Button>
+          </div>
         </div>
       </section>
 

@@ -47,6 +47,7 @@
   --font-sans: var(--font-inter);
   --font-serif: var(--font-fraunces);
   --font-display: var(--font-bebas-neue);
+  --font-jakarta: var(--font-plus-jakarta-sans);
 }
 
 @layer utilities {

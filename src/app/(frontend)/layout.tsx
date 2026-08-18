@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 import { cn } from '@/utilities/ui'
-import { Bebas_Neue, Fraunces, Inter, JetBrains_Mono } from 'next/font/google'
+import { Bebas_Neue, Fraunces, Inter, JetBrains_Mono, Plus_Jakarta_Sans } from 'next/font/google'
 import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
@@ -18,6 +18,7 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jetbrains-mono' })
 const fraunces = Fraunces({ subsets: ['latin'], variable: '--font-fraunces' })
 const bebasNeue = Bebas_Neue({ subsets: ['latin'], weight: '400', variable: '--font-bebas-neue' })
+const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ['latin'], variable: '--font-plus-jakarta-sans' })
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         jetbrainsMono.variable,
         fraunces.variable,
         bebasNeue.variable,
+        plusJakartaSans.variable,
       )}
       lang="en"
       suppressHydrationWarning
