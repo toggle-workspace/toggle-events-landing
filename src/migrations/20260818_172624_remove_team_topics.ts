@@ -6,12 +6,12 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "topics" DISABLE ROW LEVEL SECURITY;
   DROP TABLE "team" CASCADE;
   DROP TABLE "topics" CASCADE;
-  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_team_fk";
-  
-  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_topics_fk";
-  
-  DROP INDEX "payload_locked_documents_rels_team_id_idx";
-  DROP INDEX "payload_locked_documents_rels_topics_id_idx";
+  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT IF EXISTS "payload_locked_documents_rels_team_fk";
+
+  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT IF EXISTS "payload_locked_documents_rels_topics_fk";
+
+  DROP INDEX IF EXISTS "payload_locked_documents_rels_team_id_idx";
+  DROP INDEX IF EXISTS "payload_locked_documents_rels_topics_id_idx";
   ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "team_id";
   ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "topics_id";`)
 }
