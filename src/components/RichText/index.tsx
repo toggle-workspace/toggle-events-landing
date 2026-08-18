@@ -6,8 +6,6 @@ import {
   RichText as ConvertRichText,
 } from '@payloadcms/richtext-lexical/react'
 
-import { CodeBlock, CodeBlockProps } from '@/blocks/Code/Component'
-
 import type {
   CallToActionBlock as CTABlockProps,
   MediaBlock as MediaBlockProps,
@@ -27,9 +25,6 @@ const jsxConverters: JSXConvertersFunction = ({ defaultConverters }) => ({
         enableGutter={false}
         disableInnerContainer={true}
       />
-    ),
-    code: ({ node }: JSXConverterArgs<{ fields: CodeBlockProps }>) => (
-      <CodeBlock className="col-start-2" {...node.fields} />
     ),
     cta: ({ node }: JSXConverterArgs<{ fields: CTABlockProps }>) => (
       <CallToActionBlock {...node.fields} />
