@@ -216,13 +216,6 @@ export const WorkshopForm: React.FC = () => {
           <p className="text-muted-foreground">
             Viknesh will WhatsApp you within <strong>2 working hours</strong>.
           </p>
-
-          <div className="text-sm font-medium text-muted-foreground">While you wait</div>
-          <div className="flex flex-col gap-2">
-            <Button variant="outline">📥 The workshop deck (PDF)</Button>
-            <Button variant="outline">👤 Save Viknesh&apos;s contact (vCard)</Button>
-            <Button variant="outline">▶ Follow Toggle on TikTok</Button>
-          </div>
         </CardContent>
       )}
     </Card>

@@ -7,8 +7,6 @@ import { Toaster } from 'sonner'
 
 import { AdminBar } from '@/components/AdminBar'
 import { Header } from '@/Header/Component'
-import { Providers } from '@/providers'
-import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 
 import './globals.css'
@@ -30,22 +28,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         bebasNeue.variable,
         plusJakartaSans.variable,
       )}
+      data-theme="dark"
       lang="en"
       suppressHydrationWarning
     >
       <head>
-        <InitTheme />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
       <body>
-        <Providers>
-          <AdminBar />
+        <AdminBar />
 
-          <Header />
-          {children}
-          <Toaster position="top-center" richColors />
-        </Providers>
+        <Header />
+        {children}
+        <Toaster position="top-center" richColors theme="dark" />
       </body>
     </html>
   )
