@@ -2,7 +2,12 @@ import React from 'react'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
@@ -46,7 +51,7 @@ export async function WorkshopLanding() {
               size="clear"
               className="w-full rounded-2xl bg-white px-[31px] py-[18px] text-[17px] font-semibold text-black hover:bg-white/90 sm:w-auto"
             >
-              <a href="#form">Book a Call</a>
+              <a href="#contact">Book a Call</a>
             </Button>
             <Button
               asChild
@@ -88,7 +93,9 @@ export async function WorkshopLanding() {
               provide expert training to upskill you: from ads to creatives and AI.
             </p>
             <Button asChild size="lg" className="self-start">
-              <a href="#form">Training Curriculum For My Brand</a>
+              <a href="https://bespoke.toggle.solutions/" target="_blank" rel="noopener noreferrer">
+                Training Curriculum For My Brand
+              </a>
             </Button>
           </CardContent>
         </Card>
@@ -112,27 +119,34 @@ export async function WorkshopLanding() {
       <Separator />
 
       {/* Form */}
-      <section className="container flex flex-col items-center gap-6 py-16">
+      <section id="form" className="container flex scroll-mt-24 flex-col items-center gap-6 py-16">
         <WorkshopForm />
       </section>
 
       <Separator />
 
       {/* Contact */}
-      <section className="container py-16">
+      <section id="contact" className="container scroll-mt-24 py-16">
         <Card className="mx-auto max-w-md text-center">
           <CardHeader>
             <CardTitle>Talk to us on WhatsApp</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col items-center gap-2">
-            <a href="https://wa.me/60125688681" className="text-xl font-semibold">
+            <a
+              href="https://wa.me/60125688681"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xl font-semibold"
+            >
               +60 12-568 8681
             </a>
             <p className="text-sm text-muted-foreground">
-              [[Viknesh]] · replies within 2 working hours
+              Viknesh · replies within 2 working hours
             </p>
             <Button asChild size="lg" className="mt-4 w-full">
-              <a href="https://wa.me/60125688681">💬 Message us on WhatsApp</a>
+              <a href="https://wa.me/60125688681" target="_blank" rel="noopener noreferrer">
+                💬 Message us on WhatsApp
+              </a>
             </Button>
           </CardContent>
         </Card>

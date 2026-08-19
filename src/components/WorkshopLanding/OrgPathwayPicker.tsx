@@ -16,8 +16,6 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-const NOT_LISTED = 'not-listed'
-
 export const OrgPathwayPicker: React.FC<{ organizations: Organization[] }> = ({
   organizations,
 }) => {
@@ -29,7 +27,7 @@ export const OrgPathwayPicker: React.FC<{ organizations: Organization[] }> = ({
     const initial =
       (fromQuery && organizations.some((o) => o.slug === fromQuery) && fromQuery) ||
       (stored && organizations.some((o) => o.slug === stored) && stored) ||
-      NOT_LISTED
+      ''
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setSlug(initial)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -61,7 +59,6 @@ export const OrgPathwayPicker: React.FC<{ organizations: Organization[] }> = ({
                 {o.name}
               </SelectItem>
             ))}
-            <SelectItem value={NOT_LISTED}>My organization is not listed</SelectItem>
           </SelectContent>
         </Select>
       </div>
