@@ -141,7 +141,7 @@ export async function WorkshopLanding() {
               +60 12-568 8681
             </a>
             <p className="text-sm text-muted-foreground">
-              [[Viknesh]] · replies within 2 working hours
+              Viknesh · replies within 2 working hours
             </p>
             <Button asChild size="lg" className="mt-4 w-full">
               <a href="https://wa.me/60125688681" target="_blank" rel="noopener noreferrer">

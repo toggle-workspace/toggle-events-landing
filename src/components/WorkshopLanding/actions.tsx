@@ -57,8 +57,10 @@ export async function sendWorkshopLead(lead: WorkshopLead) {
   const need = lead.need || 'Not specified'
   const spend = lead.spend || 'Not specified'
   const isDev = process.env.NODE_ENV === 'development'
-  const adminTo = isDev ? 'delivered@resend.dev' : INBOX
-  const customerTo = isDev ? 'delivered@resend.dev' : email
+  // In dev the auto-reply goes to our own inbox instead of whatever address was typed —
+  // real mail we can actually look at, and never a stranger (or a bouncing test address).
+  const adminTo = INBOX
+  const customerTo = isDev ? INBOX : email
 
   // Keyed on the submission's contents, not the clock: a double-click or a Next.js
   // action retry dedupes inside Resend's 24h window, while a genuine resubmission

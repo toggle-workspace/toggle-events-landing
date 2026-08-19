@@ -75,7 +75,7 @@ export const WorkshopForm: React.FC = () => {
     setSubmitting(false)
 
     if (result.success) {
-      toast.success('Booked. Check your email — we sent a confirmation.')
+      toast.success('Booked. Check your email, we sent a confirmation.')
       setStep('done')
     } else {
       toast.error(result.error ?? 'Something went wrong. Please try again.')
@@ -192,7 +192,7 @@ export const WorkshopForm: React.FC = () => {
                 onCheckedChange={(checked) => setConsent(checked === true)}
               />
               <Label htmlFor="cons" className="font-normal">
-                I agree to be contacted about my enquiry. [[PDPA 2010 notice link]]
+                I agree to be contacted about my enquiry.
               </Label>
             </div>
 
@@ -214,28 +214,13 @@ export const WorkshopForm: React.FC = () => {
           <CheckCircle2 className="mx-auto size-10 text-primary" />
           <h2 className="text-xl font-semibold">Got it, {name.split(' ')[0] || 'there'}.</h2>
           <p className="text-muted-foreground">
-            [[Viknesh]] will WhatsApp you within <strong>2 working hours</strong>.
+            Viknesh will WhatsApp you within <strong>2 working hours</strong>.
           </p>
-
-          <div className="text-sm font-medium text-muted-foreground">Skip the back-and-forth</div>
-          <Card>
-            <CardContent className="pt-6 text-sm">
-              📅 <strong>Calendar embed — 30 min slots</strong>
-              <br />
-              [[Cal.com / Calendly / HubSpot embed]]
-              <br />
-              <br />
-              <em>
-                Highest-value element on this page. A form is a lead; a booked slot is a meeting.
-              </em>
-            </CardContent>
-          </Card>
 
           <div className="text-sm font-medium text-muted-foreground">While you wait</div>
           <div className="flex flex-col gap-2">
             <Button variant="outline">📥 The workshop deck (PDF)</Button>
-            <Button variant="outline">📄 [[One genuinely useful asset]]</Button>
-            <Button variant="outline">👤 Save [[Viknesh]]&apos;s contact (vCard)</Button>
+            <Button variant="outline">👤 Save Viknesh&apos;s contact (vCard)</Button>
             <Button variant="outline">▶ Follow Toggle on TikTok</Button>
           </div>
         </CardContent>
