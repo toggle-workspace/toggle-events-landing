@@ -22,6 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       className={cn(
+        'scroll-smooth',
         inter.variable,
         jetbrainsMono.variable,
         fraunces.variable,

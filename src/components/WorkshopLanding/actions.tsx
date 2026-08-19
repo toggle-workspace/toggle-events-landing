@@ -1,6 +1,8 @@
 'use server'
 
 import { createHash } from 'node:crypto'
+import configPromise from '@payload-config'
+import { getPayload } from 'payload'
 import { Resend } from 'resend'
 import type { CreateEmailOptions } from 'resend'
 
@@ -42,20 +44,34 @@ export async function sendWorkshopLead(lead: WorkshopLead) {
     return { success: false, error: 'Please check your details and try again.' }
   }
 
+  const need = lead.need || 'Not specified'
+  const spend = lead.spend || 'Not specified'
+
+  // Store first, email second: the database is the record of the lead, email is only
+  // the notification. If this write fails there's nothing to notify anyone about.
+  const payload = await getPayload({ config: configPromise })
+  let leadId: string | number
+  try {
+    const doc = await payload.create({
+      collection: 'workshop-leads',
+      data: { name, company, email, whatsapp, need, spend, consent: true, emailed: false },
+    })
+    leadId = doc.id
+  } catch (err) {
+    console.error('[workshop-lead] failed to store lead:', err)
+    return { success: false, error: SEND_FAILED }
+  }
+
   // ponytail: constructed per-call — a module-level Resend throws on a missing key,
   // which crashes the import and takes the whole form down.
   const apiKey = process.env.RESEND_API_KEY
   if (!apiKey) {
-    // Deploy misconfiguration, not a visitor mistake: loud in logs, generic on screen.
-    console.error(
-      `[workshop-lead] RESEND_API_KEY is not set — dropped lead: ${name} <${email}> ${whatsapp} (${company})`,
-    )
-    return { success: false, error: SEND_FAILED }
+    // Deploy misconfiguration, not a visitor mistake. The lead is safe in the database,
+    // so the visitor gets a success — we just have to notice the log.
+    console.error(`[workshop-lead] RESEND_API_KEY is not set — lead ${leadId} stored but unemailed`)
+    return { success: true }
   }
   const resend = new Resend(apiKey)
-
-  const need = lead.need || 'Not specified'
-  const spend = lead.spend || 'Not specified'
   const isDev = process.env.NODE_ENV === 'development'
   // In dev the auto-reply goes to our own inbox instead of whatever address was typed —
   // real mail we can actually look at, and never a stranger (or a bouncing test address).
@@ -70,7 +86,6 @@ export async function sendWorkshopLead(lead: WorkshopLead) {
     .digest('hex')
     .slice(0, 16)
 
-  // The lead notification is the one that must land — if it fails, tell the visitor.
   const adminSent = await send(
     resend,
     {
@@ -92,7 +107,13 @@ export async function sendWorkshopLead(lead: WorkshopLead) {
     `workshop-lead/${submission}`,
   )
 
-  if (!adminSent) return { success: false, error: SEND_FAILED }
+  // The lead is already stored, so a failed notification is our problem, not the
+  // visitor's — leave `emailed` unticked and let the admin list surface it.
+  if (adminSent) {
+    await payload
+      .update({ collection: 'workshop-leads', id: leadId, data: { emailed: true } })
+      .catch((err) => console.error(`[workshop-lead] could not flag ${leadId} as emailed:`, err))
+  }
 
   // ponytail: auto-reply failure doesn't fail the submission — we already have the lead.
   await send(

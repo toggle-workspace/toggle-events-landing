@@ -73,6 +73,7 @@ export interface Config {
     modules: Module;
     organizations: Organization;
     users: User;
+    'workshop-leads': WorkshopLead;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -86,6 +87,7 @@ export interface Config {
     modules: ModulesSelect<false> | ModulesSelect<true>;
     organizations: OrganizationsSelect<false> | OrganizationsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    'workshop-leads': WorkshopLeadsSelect<false> | WorkshopLeadsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -364,6 +366,29 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "workshop-leads".
+ */
+export interface WorkshopLead {
+  id: number;
+  name: string;
+  company: string;
+  email: string;
+  whatsapp: string;
+  need?: string | null;
+  spend?: string | null;
+  /**
+   * Agreed to be contacted (PDPA)
+   */
+  consent: boolean;
+  /**
+   * Notification email reached Resend. Unticked = follow up manually.
+   */
+  emailed?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -409,6 +434,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'workshop-leads';
+        value: number | WorkshopLead;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -646,6 +675,22 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "workshop-leads_select".
+ */
+export interface WorkshopLeadsSelect<T extends boolean = true> {
+  name?: T;
+  company?: T;
+  email?: T;
+  whatsapp?: T;
+  need?: T;
+  spend?: T;
+  consent?: T;
+  emailed?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -51,7 +51,7 @@ export async function WorkshopLanding() {
               size="clear"
               className="w-full rounded-2xl bg-white px-[31px] py-[18px] text-[17px] font-semibold text-black hover:bg-white/90 sm:w-auto"
             >
-              <a href="#form">Book a Call</a>
+              <a href="#contact">Book a Call</a>
             </Button>
             <Button
               asChild
@@ -119,14 +119,14 @@ export async function WorkshopLanding() {
       <Separator />
 
       {/* Form */}
-      <section className="container flex flex-col items-center gap-6 py-16">
+      <section id="form" className="container flex scroll-mt-24 flex-col items-center gap-6 py-16">
         <WorkshopForm />
       </section>
 
       <Separator />
 
       {/* Contact */}
-      <section className="container py-16">
+      <section id="contact" className="container scroll-mt-24 py-16">
         <Card className="mx-auto max-w-md text-center">
           <CardHeader>
             <CardTitle>Talk to us on WhatsApp</CardTitle>

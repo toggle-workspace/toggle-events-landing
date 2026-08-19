@@ -10,6 +10,7 @@ import { Media } from './collections/Media'
 import { Modules } from './collections/Modules'
 import { Organizations } from './collections/Organizations'
 import { Users } from './collections/Users'
+import { WorkshopLeads } from './collections/WorkshopLeads'
 import { Home } from './Home/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
@@ -63,7 +64,7 @@ export default buildConfig({
     },
     push: process.env.NODE_ENV !== 'production',
   }),
-  collections: [CaseStudies, FAQ, Media, Modules, Organizations, Users],
+  collections: [CaseStudies, FAQ, Media, Modules, Organizations, Users, WorkshopLeads],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Home],
   plugins,
