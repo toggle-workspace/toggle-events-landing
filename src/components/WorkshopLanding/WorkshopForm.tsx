@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useState } from 'react'
-import { CheckCircle2 } from 'lucide-react'
+import { CheckCircle2, Loader2 } from 'lucide-react'
+import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
@@ -11,7 +12,29 @@ import { Label } from '@/components/ui/label'
 import { Progress } from '@/components/ui/progress'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 
+import { sendWorkshopLead } from './actions'
+
 type Step = 'step1' | 'step2' | 'done'
+
+const NEEDS = [
+  { value: 'leads', label: 'Getting more leads' },
+  { value: 'conversion', label: "Leads come in, sales don't" },
+  { value: 'tiktok', label: 'TikTok / paid ads specifically' },
+  { value: 'web', label: 'Website & tracking' },
+  { value: 'bespoke', label: 'Build the system in-house' },
+  { value: 'other', label: 'Something else' },
+]
+
+const SPENDS = [
+  { value: '0', label: 'Not yet' },
+  { value: 'lt5', label: 'Under RM5k' },
+  { value: '5-20', label: 'RM5k–20k' },
+  { value: '20-50', label: 'RM20k–50k' },
+  { value: '50+', label: 'RM50k+' },
+]
+
+const labelOf = (options: { value: string; label: string }[], value: string) =>
+  options.find((option) => option.value === value)?.label ?? ''
 
 export const WorkshopForm: React.FC = () => {
   const [step, setStep] = useState<Step>('step1')
@@ -26,18 +49,37 @@ export const WorkshopForm: React.FC = () => {
 
   const handleStep1 = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!name.trim() || whatsapp.replace(/\D/g, '').length < 9 || !company.trim()) return
+    if (!name.trim()) return toast.error('Please tell us your name.')
+    if (whatsapp.replace(/\D/g, '').length < 9)
+      return toast.error('Please enter a valid WhatsApp number.')
+    if (!company.trim()) return toast.error('Please tell us your company.')
     setStep('step2')
   }
 
-  const handleStep2 = (e: React.FormEvent) => {
+  const handleStep2 = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim()) || !consent) return
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim()))
+      return toast.error('Please enter a valid email address.')
+    if (!consent) return toast.error('Please agree to be contacted so we can reply.')
+
     setSubmitting(true)
-    setTimeout(() => {
-      setSubmitting(false)
+    const result = await sendWorkshopLead({
+      name,
+      whatsapp,
+      company,
+      email,
+      need: labelOf(NEEDS, need),
+      spend: labelOf(SPENDS, spend),
+      consent,
+    })
+    setSubmitting(false)
+
+    if (result.success) {
+      toast.success('Booked. Check your email — we sent a confirmation.')
       setStep('done')
-    }, 500)
+    } else {
+      toast.error(result.error ?? 'Something went wrong. Please try again.')
+    }
   }
 
   return (
@@ -106,14 +148,7 @@ export const WorkshopForm: React.FC = () => {
             <div className="flex flex-col gap-3">
               <Label>What do you want help with?</Label>
               <RadioGroup value={need} onValueChange={setNeed}>
-                {[
-                  { value: 'leads', label: 'Getting more leads' },
-                  { value: 'conversion', label: "Leads come in, sales don't" },
-                  { value: 'tiktok', label: 'TikTok / paid ads specifically' },
-                  { value: 'web', label: 'Website & tracking' },
-                  { value: 'bespoke', label: 'Build the system in-house' },
-                  { value: 'other', label: 'Something else' },
-                ].map((option) => (
+                {NEEDS.map((option) => (
                   <div key={option.value} className="flex items-center gap-2">
                     <RadioGroupItem value={option.value} id={`need-${option.value}`} />
                     <Label htmlFor={`need-${option.value}`} className="font-normal">
@@ -127,13 +162,7 @@ export const WorkshopForm: React.FC = () => {
             <div className="flex flex-col gap-3">
               <Label>Roughly what do you spend on marketing monthly?</Label>
               <RadioGroup value={spend} onValueChange={setSpend}>
-                {[
-                  { value: '0', label: 'Not yet' },
-                  { value: 'lt5', label: 'Under RM5k' },
-                  { value: '5-20', label: 'RM5k–20k' },
-                  { value: '20-50', label: 'RM20k–50k' },
-                  { value: '50+', label: 'RM50k+' },
-                ].map((option) => (
+                {SPENDS.map((option) => (
                   <div key={option.value} className="flex items-center gap-2">
                     <RadioGroupItem value={option.value} id={`spend-${option.value}`} />
                     <Label htmlFor={`spend-${option.value}`} className="font-normal">
@@ -168,7 +197,13 @@ export const WorkshopForm: React.FC = () => {
             </div>
 
             <Button type="submit" size="lg" disabled={submitting}>
-              {submitting ? 'Sending…' : '▸ Book my teardown'}
+              {submitting ? (
+                <>
+                  <Loader2 className="animate-spin" /> Sending…
+                </>
+              ) : (
+                '▸ Book my teardown'
+              )}
             </Button>
           </CardContent>
         </form>

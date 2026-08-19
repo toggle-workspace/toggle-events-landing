@@ -3,9 +3,9 @@ import type { Metadata } from 'next'
 import { cn } from '@/utilities/ui'
 import { Bebas_Neue, Fraunces, Inter, JetBrains_Mono, Plus_Jakarta_Sans } from 'next/font/google'
 import React from 'react'
+import { Toaster } from 'sonner'
 
 import { AdminBar } from '@/components/AdminBar'
-import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
@@ -44,7 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
           <Header />
           {children}
-          <Footer />
+          <Toaster position="top-center" richColors />
         </Providers>
       </body>
     </html>
