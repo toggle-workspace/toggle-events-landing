@@ -104,10 +104,14 @@
   --muted-foreground: oklch(55.6% 0 0deg);
   --accent: oklch(97% 0 0deg);
   --accent-foreground: oklch(20.5% 0 0deg);
-  --destructive: oklch(57.7% 0.245 27.325deg);
-  --destructive-foreground: oklch(57.7% 0.245 27.325deg);
+  /* Was the same red as --destructive, i.e. red text on a red button. Foreground is
+     what sits *on* destructive; the red itself is darkened so error text clears 4.5:1. */
+  --destructive: oklch(52% 0.22 27.325deg);
+  --destructive-foreground: oklch(98.5% 0 0deg);
   --border: oklch(92.2% 0 0deg);
-  --input: oklch(92.2% 0 0deg);
+  /* Darker than --border on purpose: a field edge is a control boundary and needs 3:1,
+     a card edge is decoration. At 92.2% the inputs vanished against the 96.5% card. */
+  --input: oklch(64% 0 0deg);
   --ring: oklch(70.8% 0 0deg);
   --chart-1: oklch(64.6% 0.222 41.116deg);
   --chart-2: oklch(60% 0.118 184.704deg);
@@ -143,10 +147,13 @@
   --muted-foreground: oklch(70.8% 0 0deg);
   --accent: oklch(26.9% 0 0deg);
   --accent-foreground: oklch(98.5% 0 0deg);
-  --destructive: oklch(39.6% 0.141 25.723deg);
-  --destructive-foreground: oklch(63.7% 0.237 25.331deg);
+  /* ponytail: bright enough for error text on a near-black card, which is all this
+     theme uses it for. A destructive *button* here would only hit ~3.5:1 — pick a
+     dark foreground for that if one ever ships. */
+  --destructive: oklch(63.7% 0.237 25.331deg);
+  --destructive-foreground: oklch(98.5% 0 0deg);
   --border: oklch(26.9% 0 0deg);
-  --input: oklch(26.9% 0 0deg);
+  --input: oklch(50% 0 0deg);
   --ring: oklch(43.9% 0 0deg);
   --chart-1: oklch(48.8% 0.243 264.376deg);
   --chart-2: oklch(69.6% 0.17 162.48deg);
