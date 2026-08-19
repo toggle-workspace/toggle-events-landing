@@ -22,3 +22,6 @@ node_modules/
 /playwright/.cache/
 .env*
 .env.example
+
+# Playwright MCP session artifacts
+.playwright-mcp/
