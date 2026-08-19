@@ -42,25 +42,47 @@ export const WorkshopForm: React.FC = () => {
   const [whatsapp, setWhatsapp] = useState('+60 ')
   const [company, setCompany] = useState('')
   const [email, setEmail] = useState('')
-  const [need, setNeed] = useState('')
+  const [needs, setNeeds] = useState<string[]>([])
   const [spend, setSpend] = useState('')
   const [consent, setConsent] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  // Only ever one message at a time — validation stops at the first bad field and
+  // sends the visitor straight to it.
+  const [error, setError] = useState<{ field: string; message: string } | null>(null)
+
+  const fail = (field: string, message: string) => {
+    setError({ field, message })
+    document.getElementById(field)?.focus()
+  }
+
+  const errorProps = (field: string) =>
+    error?.field === field
+      ? { 'aria-invalid': true, 'aria-describedby': `${field}-error` }
+      : { 'aria-invalid': false }
+
+  const fieldError = (field: string) =>
+    error?.field === field ? (
+      <p id={`${field}-error`} role="alert" className="text-sm font-medium text-destructive">
+        {error.message}
+      </p>
+    ) : null
 
   const handleStep1 = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!name.trim()) return toast.error('Please tell us your name.')
+    if (!name.trim()) return fail('name', 'Please tell us your name.')
     if (whatsapp.replace(/\D/g, '').length < 9)
-      return toast.error('Please enter a valid WhatsApp number.')
-    if (!company.trim()) return toast.error('Please tell us your company.')
+      return fail('wa', 'Please enter a valid WhatsApp number.')
+    if (!company.trim()) return fail('co', 'Please tell us your company.')
+    setError(null)
     setStep('step2')
   }
 
   const handleStep2 = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim()))
-      return toast.error('Please enter a valid email address.')
-    if (!consent) return toast.error('Please agree to be contacted so we can reply.')
+      return fail('em', 'Please enter a valid email address.')
+    if (!consent) return fail('cons', 'Please agree to be contacted so we can reply.')
+    setError(null)
 
     setSubmitting(true)
     const result = await sendWorkshopLead({
@@ -68,7 +90,7 @@ export const WorkshopForm: React.FC = () => {
       whatsapp,
       company,
       email,
-      need: labelOf(NEEDS, need),
+      need: needs.map((value) => labelOf(NEEDS, value)).join(', '),
       spend: labelOf(SPENDS, spend),
       consent,
     })
@@ -83,7 +105,7 @@ export const WorkshopForm: React.FC = () => {
   }
 
   return (
-    <Card id="form" className="w-full max-w-lg">
+    <Card className="w-full max-w-lg">
       {step === 'step1' && (
         <form onSubmit={handleStep1}>
           <CardHeader>
@@ -100,9 +122,11 @@ export const WorkshopForm: React.FC = () => {
                 id="name"
                 autoComplete="name"
                 placeholder="Your name"
+                {...errorProps('name')}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
+              {fieldError('name')}
             </div>
             <div className="flex flex-col gap-2">
               <Label htmlFor="wa">WhatsApp number</Label>
@@ -111,9 +135,11 @@ export const WorkshopForm: React.FC = () => {
                 type="tel"
                 autoComplete="tel"
                 placeholder="+60 12-345 6789"
+                {...errorProps('wa')}
                 value={whatsapp}
                 onChange={(e) => setWhatsapp(e.target.value)}
               />
+              {fieldError('wa')}
             </div>
             <div className="flex flex-col gap-2">
               <Label htmlFor="co">Company</Label>
@@ -121,9 +147,11 @@ export const WorkshopForm: React.FC = () => {
                 id="co"
                 autoComplete="organization"
                 placeholder="Company name"
+                {...errorProps('co')}
                 value={company}
                 onChange={(e) => setCompany(e.target.value)}
               />
+              {fieldError('co')}
             </div>
             <Button type="submit" size="lg">
               Continue →
@@ -146,22 +174,34 @@ export const WorkshopForm: React.FC = () => {
           </CardHeader>
           <CardContent className="flex flex-col gap-6">
             <div className="flex flex-col gap-3">
-              <Label>What do you want help with?</Label>
-              <RadioGroup value={need} onValueChange={setNeed}>
+              {/* A Label with no htmlFor is decoration — name the group so the options
+                  aren't read out as six unrelated checkboxes. */}
+              <Label id="needs-label">What do you want help with?</Label>
+              <div role="group" aria-labelledby="needs-label" className="flex flex-col gap-2">
                 {NEEDS.map((option) => (
                   <div key={option.value} className="flex items-center gap-2">
-                    <RadioGroupItem value={option.value} id={`need-${option.value}`} />
+                    <Checkbox
+                      id={`need-${option.value}`}
+                      checked={needs.includes(option.value)}
+                      onCheckedChange={(checked) =>
+                        setNeeds((prev) =>
+                          checked
+                            ? [...prev, option.value]
+                            : prev.filter((value) => value !== option.value),
+                        )
+                      }
+                    />
                     <Label htmlFor={`need-${option.value}`} className="font-normal">
                       {option.label}
                     </Label>
                   </div>
                 ))}
-              </RadioGroup>
+              </div>
             </div>
 
             <div className="flex flex-col gap-3">
-              <Label>Roughly what do you spend on marketing monthly?</Label>
-              <RadioGroup value={spend} onValueChange={setSpend}>
+              <Label id="spend-label">Roughly what do you spend on marketing monthly?</Label>
+              <RadioGroup aria-labelledby="spend-label" value={spend} onValueChange={setSpend}>
                 {SPENDS.map((option) => (
                   <div key={option.value} className="flex items-center gap-2">
                     <RadioGroupItem value={option.value} id={`spend-${option.value}`} />
@@ -180,20 +220,27 @@ export const WorkshopForm: React.FC = () => {
                 type="email"
                 autoComplete="email"
                 placeholder="you@company.com"
+                {...errorProps('em')}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
+              {fieldError('em')}
             </div>
 
-            <div className="flex items-start gap-2">
-              <Checkbox
-                id="cons"
-                checked={consent}
-                onCheckedChange={(checked) => setConsent(checked === true)}
-              />
-              <Label htmlFor="cons" className="font-normal">
-                I agree to be contacted about my enquiry.
-              </Label>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-start gap-2">
+                <Checkbox
+                  id="cons"
+                  {...errorProps('cons')}
+                  className="aria-invalid:border-destructive"
+                  checked={consent}
+                  onCheckedChange={(checked) => setConsent(checked === true)}
+                />
+                <Label htmlFor="cons" className="font-normal">
+                  I agree to be contacted about my enquiry.
+                </Label>
+              </div>
+              {fieldError('cons')}
             </div>
 
             <Button type="submit" size="lg" disabled={submitting}>
